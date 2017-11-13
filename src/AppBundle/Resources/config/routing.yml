@@ -1,0 +1,10 @@
+homepage:
+    path: /
+    defaults:
+        _controller: AppBundle:Home:homepage
+    methods: [GET]
+
+add_meeting:
+    path: /ajax/add-meeting
+    defaults:
+        _controller: AppBundle:Meeting:addMeeting
