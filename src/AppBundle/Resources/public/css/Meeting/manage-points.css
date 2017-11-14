@@ -1,0 +1,11 @@
+.card-header{
+    cursor:pointer;
+}
+
+.card-header:hover{
+    background-color: #e8e9ea;
+}
+
+.card{
+    margin-bottom: 10px;
+}

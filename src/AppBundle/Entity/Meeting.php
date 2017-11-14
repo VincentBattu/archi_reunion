@@ -4,12 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Meeting
  *
  * @ORM\Table(name="meeting")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingRepository")
+ * @UniqueEntity(fields={"date"}, message="Une réunion existe déjà à cette date donnée")
  */
 class Meeting
 {
@@ -23,16 +26,18 @@ class Meeting
     private $id;
 
     /**
-     * @var
+     * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Point", mappedBy="meeting")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Point", mappedBy="meeting", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"date" = "DESC"})
      */
     private $points;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name = "date", type="datetime")
+     * @ORM\Column(name = "date", type="date", unique=true)
+     * @Assert\Date()
      */
     private $date;
 

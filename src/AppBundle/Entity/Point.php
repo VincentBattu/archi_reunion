@@ -24,14 +24,34 @@ class Point
 
 
     /**
-     * @var
+     * @var Meeting
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="points")
      * @ORM\JoinColumn(nullable=true)
      */
     private $meeting;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     *
+     */
+    private $date;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="report", type="text", nullable=true)
+     */
+    private $report;
 
 
     /**
@@ -44,6 +64,10 @@ class Point
         return $this->id;
     }
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Set meeting
@@ -67,5 +91,77 @@ class Point
     public function getMeeting()
     {
         return $this->meeting;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Point
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Point
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set report
+     *
+     * @param string $report
+     *
+     * @return Point
+     */
+    public function setReport($report)
+    {
+        $this->report = $report;
+
+        return $this;
+    }
+
+    /**
+     * Get report
+     *
+     * @return string
+     */
+    public function getReport()
+    {
+        return $this->report;
     }
 }

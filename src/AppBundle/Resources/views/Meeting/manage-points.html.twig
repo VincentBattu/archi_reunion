@@ -1,0 +1,45 @@
+{% extends '@App/base.html.twig' %}
+
+{% block title %}
+    Réunion du {{ meeting.date|date("d/m/Y") }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/Meeting/manage-points.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Ordre du jour</h1>
+        </div>
+        <div class="row d-flex justify-content-end" style="margin-bottom: 10px;">
+            {{ form(form, {'attr': {'id': 'add-point-form'}}) }}
+        </div>
+
+        <div id="points-list">
+        {% for point in meeting.points %}
+            <div class="card">
+                <div class="card-header">
+                    {{ point.title }}
+                    <small>
+                        <time class="timeago float-right" datetime="{{ point.date|date('c') }}"></time>
+                    </small>
+                </div>
+                <div class="card-body">
+                    {{ point.report }}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/jquery-timeago.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/jquery-timeago-fr.min.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/Meeting/manage-point.js') }}"></script>
+{% endblock %}

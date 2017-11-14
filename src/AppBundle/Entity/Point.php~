@@ -24,14 +24,34 @@ class Point
 
 
     /**
-     * @var
+     * @var Meeting
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="points")
      * @ORM\JoinColumn(nullable=true)
      */
     private $meeting;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     *
+     */
+    private $date;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="report", type="text")
+     */
+    private $report;
 
 
     /**
@@ -44,6 +64,10 @@ class Point
         return $this->id;
     }
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Set meeting
