@@ -10,6 +10,7 @@ use IntlDateFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +36,18 @@ class MeetingController extends Controller
             ])
             ->getForm();
 
+        $pointsForm = [];
+        /**
+         * @var $point Point
+         */
+        foreach ($meeting->getPoints() as $point) {
+            $pointsForm[$point->getId()] = $this->createUpdateTitleForm($point)->createView();
+        }
+
         return $this->render('@App/Meeting/manage-points.html.twig', [
-            'meeting' => $meeting,
-            'form'    => $form->createView()
+            'meeting'    => $meeting,
+            'form'       => $form->createView(),
+            'pointsForm' => $pointsForm
         ]);
     }
 
@@ -103,7 +113,7 @@ class MeetingController extends Controller
         return $this->json([
             'success' => true,
             'title'   => $point->getTitle(),
-            'date' => $point->getDate()->format(\DateTime::ISO8601)
+            'date'    => $point->getDate()->format(\DateTime::ISO8601)
         ]);
     }
 
@@ -125,5 +135,24 @@ class MeetingController extends Controller
                 $errors[$key] = $err;
         }
         return $errors;
+    }
+
+    /**
+     * Crée le formulaire correspondant à la modification du titre d'un point
+     * @param Meeting $meeting
+     * @return FormInterface
+     */
+    private function createUpdateTitleForm(Point $point): FormInterface
+    {
+        return $this->createFormBuilder($point)
+            ->setAction($this->get('router')->generate('update_title_point_ajax', ['id' => $point->getId()]))
+            ->setMethod('POST')
+            ->add('title', TextType::class, [
+                'label' => false,
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->getForm();
     }
 }

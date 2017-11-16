@@ -21,10 +21,18 @@
         {% for point in meeting.points %}
             <div class="card">
                 <div class="card-header">
-                    {{ point.title }}
-                    <small>
-                        <time class="timeago float-right" datetime="{{ point.date|date('c') }}"></time>
-                    </small>
+                    <div class="row">
+                        <div class="col-xl-10 col-sm-8">
+                            {{ form(pointsForm[point.id]) }}
+                        </div>
+                        <div class="col-xl-2 col-sm-4">
+                            <small>
+                                <time class="timeago float-right" datetime="{{ point.date|date('c') }}"></time>
+                            </small>
+                        </div>
+
+                    </div>
+
                 </div>
                 <div class="card-body">
                     {{ point.report }}

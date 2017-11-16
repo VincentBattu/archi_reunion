@@ -8,6 +8,7 @@ add_meeting:
     path: /ajax/add-meeting
     defaults:
         _controller: AppBundle:Meeting:addMeeting
+    methods: [POST]
 
 manage_points:
     path: /reunions/{id}/ordre-du-jour
@@ -19,3 +20,9 @@ add_point_ajax:
     path: /ajax/add-point/{id}
     defaults:
         _controller: AppBundle:Meeting:addPoint
+    methods: [POST]
+
+update_title_point_ajax:
+    path: /ajax/point/{id}/update-title
+    defaults:
+        _controller: AppBundle:Point:updateTitle
