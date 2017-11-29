@@ -16,13 +16,20 @@ manage_points:
         _controller: AppBundle:Meeting:managePoints
     methods: [GET]
 
-add_point_ajax:
-    path: /ajax/add-point/{id}
+update_point_ajax:
+    path: /ajax/update-points/{id}
     defaults:
-        _controller: AppBundle:Meeting:addPoint
+        _controller: AppBundle:Meeting:updatePoints
     methods: [POST]
 
 update_title_point_ajax:
     path: /ajax/point/{id}/update-title
     defaults:
         _controller: AppBundle:Point:updateTitle
+    methods: [POST]
+
+list_meeting_report:
+    path: /reunions/comptes-rendu
+    defaults:
+        _controller: AppBundle:Meeting:listMeetingReport
+    methods: [GET]

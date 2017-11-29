@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Meeting;
-use AppBundle\Form\MeetingType;
+use AppBundle\Form\AddMeetingType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,7 +16,7 @@ class HomeController extends Controller
 
         $meeting = new Meeting();
         $meeting->setDate(new \DateTime());
-        $form = $this->createForm(MeetingType::class, $meeting);
+        $form = $this->createForm(AddMeetingType::class, $meeting);
 
         $query = $em->getRepository('AppBundle:Meeting')
             ->createQueryBuilder('m')

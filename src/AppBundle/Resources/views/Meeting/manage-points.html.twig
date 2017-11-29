@@ -14,34 +14,41 @@
             <h1>Ordre du jour</h1>
         </div>
         <div class="row d-flex justify-content-end" style="margin-bottom: 10px;">
-            {{ form(form, {'attr': {'id': 'add-point-form'}}) }}
+            <a id="add-point-link" class="btn btn-primary" href="">Nouveau point</a>
         </div>
 
-        <div id="points-list">
-        {% for point in meeting.points %}
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-xl-10 col-sm-8">
-                            {{ form(pointsForm[point.id]) }}
+    {{ form_start(form) }}
+    <ul class="points">
+        {% for point in form.points %}
+            <li>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-xl-11 col-sm-11">
+                               <div class="visible point-title">
+                                    {{ point.title.vars.value }}
+                                </div>
+                                {{ form_row(point.title, {'attr': {'class': 'form-control point-input-title hidden'}}) }}
+                            </div>
+                            <div class="col text-right">
+                                <a href="#" class="remove-point"><span class="glyphicon glyphicon-remove"></span></a>
+                            </div>
                         </div>
-                        <div class="col-xl-2 col-sm-4">
-                            <small>
-                                <time class="timeago float-right" datetime="{{ point.date|date('c') }}"></time>
-                            </small>
-                        </div>
-
                     </div>
+                    <div class="card-body">
+                        <div class="visible point-report">
+                            {{ point.report.vars.value }}
+                        </div>
+                        {{ form_row(point.report, {'attr': {'class':'form-control point-input-report hidden'}}) }}
+                    </div>
+                </div>
 
-                </div>
-                <div class="card-body">
-                    {{ point.report }}
-                </div>
-            </div>
+            </li>
         {% endfor %}
-        </div>
 
-
+    </ul>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
     </div>
 {% endblock %}
 

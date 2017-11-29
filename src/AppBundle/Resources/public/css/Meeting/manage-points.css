@@ -1,11 +1,18 @@
-.card-header{
-    cursor:pointer;
+/* Glyphicons import */
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
+
+.remove-point {
+    color: #dd1703;
 }
 
-.card-header:hover{
-    background-color: #e8e9ea;
+.remove-point:hover {
+    color: #9c1302;
 }
 
-.card{
+.card {
     margin-bottom: 10px;
+}
+
+ul.points li {
+    list-style-type: none;
 }

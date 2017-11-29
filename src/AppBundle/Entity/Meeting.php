@@ -28,7 +28,7 @@ class Meeting
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Point", mappedBy="meeting", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Point", mappedBy="meeting", cascade={"all"})
      * @ORM\OrderBy({"date" = "DESC"})
      */
     private $points;
@@ -40,7 +40,6 @@ class Meeting
      * @Assert\Date()
      */
     private $date;
-
 
 
     public function __construct()
@@ -67,7 +66,7 @@ class Meeting
      */
     public function addPoint(\AppBundle\Entity\Point $point)
     {
-        $this->points[] = $point;
+        $this->points->add($point);
         $point->setMeeting($this);
         return $this;
     }
@@ -118,3 +117,4 @@ class Meeting
         return $this->date;
     }
 }
+

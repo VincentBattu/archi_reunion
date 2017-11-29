@@ -53,6 +53,10 @@ class Point
      */
     private $report;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     /**
      * Get id
@@ -64,10 +68,6 @@ class Point
         return $this->id;
     }
 
-    public function __construct()
-    {
-        $this->date = new \DateTime();
-    }
 
     /**
      * Set meeting

@@ -4,13 +4,11 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Meeting;
-use AppBundle\Entity\Point;
+use AppBundle\Form\AddMeetingType;
 use AppBundle\Form\MeetingType;
 use IntlDateFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,30 +22,13 @@ class MeetingController extends Controller
      */
     public function managePointsAction(Meeting $meeting): Response
     {
-
-        $form = $this->createFormBuilder([])
-            ->setMethod('POST')
-            ->setAction($this->get('router')->generate('add_point_ajax', ['id' => $meeting->getId()]))
-            ->add('submit', SubmitType::class, [
-                'label' => 'Nouveau point',
-                'attr'  => [
-                    'class' => 'btn btn-primary'
-                ]
-            ])
-            ->getForm();
-
-        $pointsForm = [];
-        /**
-         * @var $point Point
-         */
-        foreach ($meeting->getPoints() as $point) {
-            $pointsForm[$point->getId()] = $this->createUpdateTitleForm($point)->createView();
-        }
+        $form = $this->createForm(MeetingType::class, $meeting, [
+            'url' => $this->get('router')->generate('update_point_ajax', ['id' => $meeting->getId()])
+        ]);
 
         return $this->render('@App/Meeting/manage-points.html.twig', [
-            'meeting'    => $meeting,
-            'form'       => $form->createView(),
-            'pointsForm' => $pointsForm
+            'meeting' => $meeting,
+            'form'    => $form->createView(),
         ]);
     }
 
@@ -66,7 +47,7 @@ class MeetingController extends Controller
         }
 
         $meeting = new Meeting();
-        $form = $this->createForm(MeetingType::class, $meeting);
+        $form = $this->createForm(AddMeetingType::class, $meeting);
 
         $form->handleRequest($request);
 
@@ -91,30 +72,37 @@ class MeetingController extends Controller
 
 
     /**
-     * Ajoute un point à l'objet meeting passé en paramètre.
-     *  Méthode peut être appelée uniquement en AJAX et en POST (redirection vers la page d'accueil si
-     * la requête n'est pas faite à travers un objet XMLHttpRequest en POST)
-     * @return Response
+     *
      */
-    public function addPointAction(Request $request, Meeting $meeting): Response
+    public function updatePointsAction(Request $request, Meeting $meeting): Response
     {
-
         if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
             return $this->redirectToRoute('homepage');
         }
 
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(MeetingType::class, $meeting);
 
-        $point = new Point();
-        $point->setTitle('Nouveau point.');
-        $meeting->addPoint($point);
-        $em->flush();
+        $form->handleRequest($request);
 
+        if ($form->isValid() && $form->isSubmitted()){
+            $em->flush();
+            return $this->json([
+                'success' => true,
+            ]);
+        }
         return $this->json([
-            'success' => true,
-            'title'   => $point->getTitle(),
-            'date'    => $point->getDate()->format(\DateTime::ISO8601)
+            'success' => false
         ]);
+
+    }
+
+
+    public function listMeetingReportAction(Request $request): Response{
+        $em = $this->getDoctrine()->getManager();
+        $points = $em->getRepository('AppBundle:Point')->findAll();
+
+        return $this->render('@App/Meeting/list-meeting-reports.html.twig', ['points' => $points]);
     }
 
     /**
@@ -126,7 +114,7 @@ class MeetingController extends Controller
      */
     private function getErrorsAsArray(FormInterface $form)
     {
-        $errors = array();
+        $errors = [];
         foreach ($form->getErrors() as $error)
             $errors[] = $error->getMessage();
 
@@ -137,22 +125,5 @@ class MeetingController extends Controller
         return $errors;
     }
 
-    /**
-     * Crée le formulaire correspondant à la modification du titre d'un point
-     * @param Meeting $meeting
-     * @return FormInterface
-     */
-    private function createUpdateTitleForm(Point $point): FormInterface
-    {
-        return $this->createFormBuilder($point)
-            ->setAction($this->get('router')->generate('update_title_point_ajax', ['id' => $point->getId()]))
-            ->setMethod('POST')
-            ->add('title', TextType::class, [
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control'
-                ]
-            ])
-            ->getForm();
-    }
+
 }
