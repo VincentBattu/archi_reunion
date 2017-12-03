@@ -13,7 +13,9 @@
             <li class="nav-item {% if app.request.get('_route') == 'list_meeting_report' -%} active {%- endif %}">
                 <a class="nav-link" href="{{ path('list_meeting_report') }}">Comptes rendus</a>
             </li>
-
+            <li class="nav-item {% if app.request.get('_route') == 'list_meeting_official_report' -%} active {%- endif %}">
+                <a class="nav-link" href="{{ path('list_meeting_official_report') }}">Comptes rendus officiels</a>
+            </li>
         </ul>
     </div>
 </nav>

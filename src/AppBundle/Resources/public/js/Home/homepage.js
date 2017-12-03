@@ -25,13 +25,15 @@ let submit = function (action, data, method = 'POST') {
  * Écoute de l'évènement de soumission du formulaire.
  */
 form.submit(function (e) {
-    e.preventDefault();
+        e.preventDefault();
     let action = form.attr('action');
     let data = form.serialize();
     submit(action, data).then(function (data) {
         if (data.success) {
             $('#meeting-group').prepend(`<a href="${data.url}"
-                                   class="list-group-item list-group-item-action">${data.date_formated}</a>`);
+                                   class="list-group-item list-group-item-action">${data.date_formated}
+                                   <h5><span class="badge badge-secondary">0</span></h5>
+                                   </a>`);
             //TODO ajouter actualisation de la pagination en AJAX
         } else {
             let msg = '';

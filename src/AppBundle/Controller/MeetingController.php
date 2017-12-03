@@ -3,9 +3,12 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Diff;
 use AppBundle\Entity\Meeting;
+use AppBundle\Entity\Point;
 use AppBundle\Form\AddMeetingType;
 use AppBundle\Form\MeetingType;
+use Doctrine\Common\Collections\ArrayCollection;
 use IntlDateFormatter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -79,13 +82,29 @@ class MeetingController extends Controller
         if (!$request->isXmlHttpRequest() || $request->getMethod() !== 'POST') {
             return $this->redirectToRoute('homepage');
         }
+        $originalPoints = new ArrayCollection();
+
+        foreach ($meeting->getPoints() as $point) {
+            $originalPoints->add($point);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(MeetingType::class, $meeting);
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()){
+        if ($form->isValid() && $form->isSubmitted()) {
+            /**
+             * @var Point $point
+             */
+            foreach ($originalPoints as $point) {
+                if (false === $meeting->getPoints()->contains($point)) {
+                    $point->setMeeting(null);
+                    $em->remove($point);
+                }
+            }
+
+            $em->persist($meeting);
             $em->flush();
             return $this->json([
                 'success' => true,
@@ -98,11 +117,26 @@ class MeetingController extends Controller
     }
 
 
-    public function listMeetingReportAction(Request $request): Response{
+    public function listMeetingReportAction(Request $request): Response
+    {
         $em = $this->getDoctrine()->getManager();
         $points = $em->getRepository('AppBundle:Point')->findAll();
 
+
         return $this->render('@App/Meeting/list-meeting-reports.html.twig', ['points' => $points]);
+    }
+
+    public function listOfficialRepotsAction(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $points = $em->getRepository('AppBundle:Point')->findAll();
+
+        $report = $points[0]->getReport();
+        $officialReport = $points[0]->getOfficialReport();
+
+        return $this->render('@App/Meeting/list-meeting-official-reports.html.twig', [
+            'points' => $points
+        ]);
     }
 
     /**

@@ -1,0 +1,33 @@
+{% extends '@App/base.html.twig' %}
+
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="page-header">
+            <h2>Compte rendu : {{ point.title }}</h2>
+        </div>
+        <div class="row d-flex justify-content-end" id="copy-report">
+            <button class="btn btn-primary">Copier le rapport</button>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>Rapport</h3>
+                <p id="report">{{ point.report }}</p>
+            </div>
+            <div class="col">
+                <h3>Rapport officiel</h3>
+                {{ form(form, {'attr':{'id':'copy-report-form'}}) }}
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/app/js/Point/update-official-report.js') }}"></script>
+{% endblock %}

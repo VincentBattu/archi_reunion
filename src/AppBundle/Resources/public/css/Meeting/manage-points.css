@@ -1,5 +1,3 @@
-/* Glyphicons import */
-@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
 
 .remove-point {
     color: #dd1703;
@@ -15,4 +13,8 @@
 
 ul.points li {
     list-style-type: none;
+}
+
+.btn:hover{
+    cursor:pointer;
 }

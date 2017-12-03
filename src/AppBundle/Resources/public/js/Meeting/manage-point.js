@@ -12,10 +12,9 @@ let prototype = `<div class="card">
                                    required="required" value="Nouveau point">
                         </div>
                     </div>
-                    <div class="col-xl-2 col-sm-4">
-                        <small>
-                            <time class="timeago float-right" datetime=""></time>
-                        </small>
+                    <div class="col text-right">
+                        <button type="button" class="btn btn-outline-dark"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>
+                        <button type="button" class="remove-point btn btn-outline-dark"><i class="fa fa-times fa-lg" aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>

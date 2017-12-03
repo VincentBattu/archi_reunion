@@ -7,3 +7,13 @@
 #form-group-submit{
     margin-bottom: 0;
 }
+
+#meeting-group .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#app_add_meeting_submit{
+    margin-right: 20px;
+}

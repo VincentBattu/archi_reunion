@@ -53,6 +53,14 @@ class Point
      */
     private $report;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="official_report", type="text", nullable=true)
+     */
+    private $officialReport;
+
     public function __construct()
     {
         $this->date = new \DateTime();
@@ -163,5 +171,22 @@ class Point
     public function getReport()
     {
         return $this->report;
+    }
+
+    public function setOfficialReport($officialReport)
+    {
+        $this->officialReport = $officialReport;
+
+        return $this;
+    }
+
+    /**
+     * Get report
+     *
+     * @return string
+     */
+    public function getOfficialReport()
+    {
+        return $this->officialReport;
     }
 }
