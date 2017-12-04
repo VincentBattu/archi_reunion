@@ -1,9 +1,9 @@
 let prototype = `<div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-xl-10 col-sm-8">
+                    <div class="col-10">
                         <div class="visible point-title">
-                            Nouveau point
+                            <span class="align-middle">Nouveau point</span>
                         </div>
                         <div>
                             <input class="form-control point-input-title hidden" type="text"
@@ -12,8 +12,9 @@ let prototype = `<div class="card">
                                    required="required" value="Nouveau point">
                         </div>
                     </div>
-                    <div class="col text-right">
-                        <button type="button" class="btn btn-outline-dark"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></button>
+                    <div class="col-2 text-right">
+                     <a href="/reunions/ordre-du-jour/__id__" class="btn btn-outline-dark" title="Éditer le compte rendu officiel"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></a>
+
                         <button type="button" class="remove-point btn btn-outline-dark"><i class="fa fa-times fa-lg" aria-hidden="true"></i></button>
                     </div>
                 </div>
@@ -41,6 +42,8 @@ let addPointForm = function ($collectionHolder) {
     let newForm = prototype;
 
     newForm = newForm.replace(/__name__/g, index);
+    newForm = newForm.replace(/__id__/g, lastId);
+    lastId++;
     $collectionHolder.data('index', index + 1);
     let $newFormLi = $('<li></li>').append(newForm);
     $collectionHolder.prepend($newFormLi);

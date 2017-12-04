@@ -19,6 +19,7 @@
                 <tr>
                     <th>#</th>
                     <th>Titre</th>
+                    <th>Date</th>
                     <th>Description</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ point.title }}</td>
+                        <td>{{ point.meeting.date|date('j/m/Y') }}</td>
                         <td>{{ point.report }}</td>
                     </tr>
                 {% endfor %}

@@ -18,44 +18,49 @@
             <a id="add-point-link" class="btn btn-primary" href="">Nouveau point</a>
         </div>
 
-    {{ form_start(form) }}
-    <ul class="points">
-        {% for point in form.points %}
-            <li>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-10">
-                               <div class="visible point-title">
-                                   <span class="align-middle">{{ point.title.vars.value }}</span>
+        {{ form_start(form) }}
+        <ul class="points">
+            {% for point in form.points %}
+                <li>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="visible point-title">
+                                        <span class="align-middle">{{ point.title.vars.value }}</span>
+                                    </div>
+                                    {{ form_row(point.title, {'attr': {'class': 'form-control point-input-title hidden'}}) }}
                                 </div>
-                                {{ form_row(point.title, {'attr': {'class': 'form-control point-input-title hidden'}}) }}
-                            </div>
-                            <div class="col-2 text-right">
-                                <a href="{{ path('update_official_report', {'id': point.vars.data.id}) }}" class="btn btn-outline-dark" title="Éditer le compte rendu officiel"><i class="fa fa-edit fa-lg" aria-hidden="true"></i></a>
-                                <button type="button" class="remove-point btn btn-outline-dark"><i class="fa fa-times fa-lg" aria-hidden="true"></i></button>
+                                <div class="col-2 text-right">
+                                    <a href="{{ path('update_official_report', {'id': point.vars.data.id}) }}"
+                                       class="btn btn-outline-dark" title="Éditer le compte rendu officiel"><i
+                                                class="fa fa-edit fa-lg" aria-hidden="true"></i></a>
+                                    <button type="button" class="remove-point btn btn-outline-dark"><i
+                                                class="fa fa-times fa-lg" aria-hidden="true"></i></button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="visible point-report">
-                            {{ point.report.vars.value }}
+                        <div class="card-body">
+                            <div class="visible point-report">
+                                {{ point.report.vars.value }}
+                            </div>
+                            {{ form_row(point.report, {'attr': {'class':'form-control point-input-report hidden'}}) }}
                         </div>
-                        {{ form_row(point.report, {'attr': {'class':'form-control point-input-report hidden'}}) }}
                     </div>
-                </div>
 
-            </li>
-        {% endfor %}
+                </li>
+            {% endfor %}
 
-    </ul>
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
+        </ul>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script>let lastId = {{ start }};</script>
+
     <script src="{{ asset('bundles/app/js/jquery-timeago.min.js') }}"></script>
     <script src="{{ asset('bundles/app/js/jquery-timeago-fr.min.js') }}"></script>
     <script src="{{ asset('bundles/app/js/Meeting/manage-point.js') }}"></script>

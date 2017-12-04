@@ -29,5 +29,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('bundles/app/js/jquery-autoresize.min.js') }}"></script>
+    <script> $('textarea').textareaAutoSize();</script>
     <script src="{{ asset('bundles/app/js/Point/update-official-report.js') }}"></script>
 {% endblock %}

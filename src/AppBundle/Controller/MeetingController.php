@@ -29,9 +29,38 @@ class MeetingController extends Controller
             'url' => $this->get('router')->generate('update_point_ajax', ['id' => $meeting->getId()])
         ]);
 
+        $start = 0;
+        $em = $this->getDoctrine()->getManager();
+        /**
+         * @var $point Point
+         */
+        $lastEntity = $em->getRepository('AppBundle:Point')
+            ->createQueryBuilder('p')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($lastEntity !=null){
+            $start = $lastEntity->getId();
+            $start++;
+        } else {
+            $temp = new Point();
+            $temp->setDate(new \DateTime());
+            $temp->setTitle('aze');
+            $em->persist($temp);
+            $em->flush();
+            $start = $temp->getId() + 1;
+            $em->remove($temp);
+            $em->flush();
+        }
+
+
+
         return $this->render('@App/Meeting/manage-points.html.twig', [
             'meeting' => $meeting,
             'form'    => $form->createView(),
+            'start' => $start
         ]);
     }
 
@@ -117,11 +146,11 @@ class MeetingController extends Controller
     }
 
 
-    public function listMeetingReportAction(Request $request): Response
+    public function listMeetingReportAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $points = $em->getRepository('AppBundle:Point')->findAll();
 
+        $points = $em->getRepository('AppBundle:Point')->findAll();
 
         return $this->render('@App/Meeting/list-meeting-reports.html.twig', ['points' => $points]);
     }
@@ -130,9 +159,6 @@ class MeetingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $points = $em->getRepository('AppBundle:Point')->findAll();
-
-        $report = $points[0]->getReport();
-        $officialReport = $points[0]->getOfficialReport();
 
         return $this->render('@App/Meeting/list-meeting-official-reports.html.twig', [
             'points' => $points
